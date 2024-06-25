@@ -4,6 +4,7 @@ import com.supamenu.www.dtos.response.ApiResponse;
 import com.supamenu.www.dtos.transaction.DepositTransactionDTO;
 import com.supamenu.www.dtos.transaction.TransactionResponseDTO;
 import com.supamenu.www.dtos.transaction.TransactionsResponseDTO;
+import com.supamenu.www.dtos.transaction.WithDrawTransactionDTO;
 import com.supamenu.www.services.interfaces.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,10 @@ public class TransactionController {
     @GetMapping("/get-my-transactions")
     public ResponseEntity<ApiResponse<TransactionsResponseDTO>> getMyTransactions(){
         return transactionService.getMyTransactions();
+    }
+
+    @PostMapping("/send-to-other-accounts")
+    public ResponseEntity<ApiResponse<TransactionResponseDTO>> sendToOtherAccounts(@Valid @RequestBody WithDrawTransactionDTO withDrawTransactionDTO) {
+        return transactionService.withDrawToOtherAccounts(withDrawTransactionDTO);
     }
 }
