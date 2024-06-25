@@ -1,14 +1,16 @@
 package com.supamenu.www.controllers;
 
 import com.supamenu.www.dtos.response.ApiResponse;
-import com.supamenu.www.dtos.transaction.DepositTransactionDTO;
-import com.supamenu.www.dtos.transaction.TransactionResponseDTO;
-import com.supamenu.www.dtos.transaction.TransactionsResponseDTO;
-import com.supamenu.www.dtos.transaction.WithDrawTransactionDTO;
+import com.supamenu.www.dtos.transaction.*;
 import com.supamenu.www.services.interfaces.TransactionService;
+import com.supamenu.www.utils.Constants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,13 +19,25 @@ import org.springframework.web.bind.annotation.*;
 public class TransactionController {
     private final TransactionService transactionService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/deposit-to-your-account")
     public ResponseEntity<ApiResponse<TransactionResponseDTO>> depositToYourAccount(@Valid @RequestBody DepositTransactionDTO depositTransactionDTO) {
         return transactionService.depositToYourAccount(depositTransactionDTO);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/get-all-transactions")
+    public ResponseEntity<ApiResponse<PaginatedTransactionsDTO>> getAllTransactions(
+            @RequestParam(value = "size", defaultValue = Constants.DEFAULT_PAGE_SIZE) int limit,
+            @RequestParam(value = "page", defaultValue = Constants.DEFAULT_PAGE_NUMBER) int page
+            ) {
+        Pageable pageable = (Pageable) PageRequest.of(page, limit, Sort.Direction.ASC, "id");
+        return transactionService.getAllTransactions(pageable);
+    }
+
     @GetMapping("/get-my-transactions")
-    public ResponseEntity<ApiResponse<TransactionsResponseDTO>> getMyTransactions(){
+    public ResponseEntity<ApiResponse<TransactionsResponseDTO>> getMyTransactions(
+    ) {
         return transactionService.getMyTransactions();
     }
 

@@ -106,7 +106,7 @@
 
 <!-- start preheader -->
 <div class="preheader" style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0;">
-    A preheader is the short summary text that follows the subject line when an email is viewed in the inbox.
+    Transaction...
 </div>
 <!-- end preheader -->
 
@@ -150,12 +150,15 @@
                 <tr>
                     <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
                         <p>Dear <span th:text="${firstName}" style="font-weight: bold">User</span>,</p>
+                        <p>You've received money from <span th:text="${senderName}" style="font-weight: bold">Sender</span>.</p>
                         <p>
                             <span>Amount: <span th:text="${amount}">10000</span> RWF</span>
                             <br />
-                            <span>Account Name: <span th:text="${accountName}">Savings</span></span>
+                            <span>Sender Account Number: <span th:text="${senderAccountNumber}">1111111111111</span></span>
                             <br />
-                            <span>Account Number: <span th:text="${accountNumber}">1111111111111</span></span>
+                            <span>Your Account Name: <span th:text="${accountName}">Savings</span></span>
+                            <br />
+                            <span>Your Account Number: <span th:text="${accountNumber}">1111111111111</span></span>
                             <br />
                             <span>Your new balance is : <span th:text="${balance}">123456</span> RWF</span>
                         </p>
