@@ -22,6 +22,9 @@ public class MailServiceImpl implements MailService {
     @Value("${app_name}")
     private String appName;
 
+    @Value("${spring.mail.username}")
+    private String appEmail;
+
     @Override
     @Async
     public void sendEmail(String to, String subject, String content, boolean isHtmlContent) {
@@ -29,7 +32,7 @@ public class MailServiceImpl implements MailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
             helper.setTo(to);
-            helper.setFrom(appName);
+            helper.setFrom(appEmail, appName);
             helper.setSubject(subject);
             helper.setText(content, isHtmlContent);
             mailSender.send(message);
