@@ -37,8 +37,8 @@ public class SpringBootMain {
     @Value("${admin.password}")
     private String adminPassword;
 
-    @Value("${admin.username}")
-    private String adminUsername;
+    @Value("${admin.phoneNumber}")
+    private String adminPhoneNumber;
 
     @Value("${admin.firstName}")
     private String adminFirstName;
@@ -61,10 +61,11 @@ public class SpringBootMain {
         if (isUserPresent.isEmpty()) {
             CreateUserDTO createUserDTO = new CreateUserDTO(
                     adminEmail,
-                    adminUsername,
+                    adminPhoneNumber,
                     adminPassword,
                     adminFirstName,
-                    adminLastName
+                    adminLastName,
+                    "2000/01/01"
             );
             User userEntity = this.userService.createUserEntity(createUserDTO);
             Role role = this.roleService.getRoleByName(EUserRole.ADMIN);

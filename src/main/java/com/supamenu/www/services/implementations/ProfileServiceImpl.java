@@ -47,7 +47,7 @@ public class ProfileServiceImpl implements ProfileService {
                 user.setFirstName(updateProfileRequestDTO.getFirstName());
             if (updateProfileRequestDTO.getLastName() != null) user.setLastName(updateProfileRequestDTO.getLastName());
             if (updateProfileRequestDTO.getEmail() != null) user.setEmail(updateProfileRequestDTO.getEmail());
-            if (updateProfileRequestDTO.getUsername() != null) user.setUsername(updateProfileRequestDTO.getUsername());
+            if (updateProfileRequestDTO.getUsername() != null) user.setPhoneNumber(updateProfileRequestDTO.getUsername());
             userRepository.save(user);
             user.setFullName(user.getFullName());
             return ApiResponse.success("Profile updated successfully", HttpStatus.OK, new ProfileResponseDTO(user));

@@ -26,8 +26,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         ApiResponse<Object> apiResponse = new ApiResponse<>(
                 false,
-                token == null ? "Missing Token" : "Invalid Token",
-                HttpStatus.UNAUTHORIZED,
+                "BAD REQUEST",
+                HttpStatus.BAD_REQUEST,
                 null
         );
 

@@ -32,21 +32,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUserEntity(CreateUserDTO createUserDTO) {
-        Optional<User> foundUser = userRepository.findUserByEmailOrUsername(createUserDTO.getEmail(), createUserDTO.getUsername());
+        Optional<User> foundUser = userRepository.findUserByEmailOrPhoneNumber(createUserDTO.getEmail(), createUserDTO.getPhoneNumber());
         if (foundUser.isPresent())
-            throw new ConflictException("The user with the given email or username already exists");
+            throw new ConflictException("The user with the given email or phoneNumber already exists");
         User user = new User();
         Role role = roleService.getRoleByName(EUserRole.USER);
         Set<Role> roles = new HashSet<>();
         roles.add(role);
-        user.setUsername(createUserDTO.getUsername());
+        user.setPhoneNumber(createUserDTO.getPhoneNumber());
         user.setFirstName(createUserDTO.getFirstName());
         user.setLastName(createUserDTO.getLastName());
         user.setStatus(EUserStatus.ACTIVE);
         user.setEmail(createUserDTO.getEmail());
-        user.setUsername(createUserDTO.getUsername());
         user.setPassword(HashUtil.hashPassword(createUserDTO.getPassword()));
         user.setFullName(createUserDTO.getFirstName() + " " + createUserDTO.getLastName());
+        user.setDob(createUserDTO.getDob().toString());
         user.setRoles(roles);
         return user;
     }
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
             if (user.getEmail() != null) user.setEmail(updateUserDTO.getEmail());
             if (user.getFirstName() != null) user.setFirstName(updateUserDTO.getFirstName());
             if (user.getLastName() != null) user.setLastName(updateUserDTO.getLastName());
-            if (user.getUsername() != null) user.setUsername(updateUserDTO.getUsername());
+            if (user.getPhoneNumber() != null) user.setPhoneNumber(updateUserDTO.getUsername());
             return ApiResponse.success("Successfully updated the user", HttpStatus.OK, new UserResponseDTO(user));
         } catch (Exception e) {
             throw new CustomException(e);
@@ -108,14 +108,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getLoggedInUser() {
-        String username;
+        String phoneNumber;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
+            phoneNumber = ((UserDetails) principal).getUsername();
         } else {
-            username = principal.toString();
+            phoneNumber = principal.toString();
         }
-        User user = userRepository.findUserByUsername(username).orElseThrow(() -> new NotFoundException("User Not Found"));
+        User user = userRepository.findUserByPhoneNumber(phoneNumber).orElseThrow(() -> new NotFoundException("User Not Found"));
         user.setFullName(user.getFirstName() + " " + user.getLastName());
         return user;
     }

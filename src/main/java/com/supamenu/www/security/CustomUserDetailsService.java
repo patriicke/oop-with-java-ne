@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional
     public UserDetails loadUserByUsername(String s) throws BadRequestException {
-        User user = userRepository.findUserByEmailOrUsername(s, s).orElseThrow(() -> new UsernameNotFoundException("user not found with email or username of " + s));
+        User user = userRepository.findUserByEmailOrPhoneNumber(s, s).orElseThrow(() -> new UsernameNotFoundException("user not found with email or phoneNumber of " + s));
         if (!user.getStatus().equals(EUserStatus.ACTIVE)) {
             throw new BadRequestException("User is not active");
         }
